@@ -6,8 +6,9 @@
 $padding: 1.5rem;
 $gap-1: 7rem;
 $gap-2: 10vh;
-$gap-3: 0.5rem;
+$gap-3: 1rem;
 $gap-4: 2vh;
+$gap-5: 0.5rem;
 $width: 85%;
 %fixed-position {
   position: fixed;
@@ -80,7 +81,7 @@ $width: 85%;
   max-height: 3rem;
   aspect-ratio: 1;
   position: relative;
-  z-index: 100;
+  z-index: 1000;
   background: linear-gradient(to bottom, $yellow-3 2%, $yellow-2);
   color: $white-1;
   font-size: 1.25rem;
@@ -135,10 +136,16 @@ $width: 85%;
   &.pause {
     height: 100%;
     position: absolute;
-    left: 0;
+    right: 0;
     top: calc(100vh - (2 * $padding));
     transform: translateY(-100%);
     transition: 0.5s;
+    visibility: hidden;
+    .fa-solid {
+      &.hide {
+        display: none;
+      }
+    }
   }
 }
 .game {
@@ -147,13 +154,15 @@ $width: 85%;
   padding: $padding;
   position: relative;
   overflow-y: auto;
-  visibility: hidden;
-  background-image: url("../media/images/background.svg");
   background-size: cover;
   background-position: 50% 90%;
-  &.hide {
-    animation-name: scaleDown;
-    animation-duration: 0.5s;
+  visibility: hidden;
+  transform-origin: right top;
+
+  &.hideGame {
+    animation-name: hideGame;
+    animation-timing-function: linear;
+    animation-duration: 0.7s;
     animation-iteration-count: 1;
   }
   .head {
@@ -372,6 +381,11 @@ $width: 85%;
         @include mediaQuery($medScreen_min_width) {
           & {
             max-height: calc((100% - $gap-1) * 0.8);
+            gap: $gap-5;
+          }
+        }
+        @include mediaQuery($largeScreen_min_width) {
+          & {
             gap: $gap-3;
           }
         }
@@ -381,6 +395,11 @@ $width: 85%;
           @include mediaQuery($medScreen_min_width) {
             & {
               max-height: calc((100% - $gap-3) * 0.5);
+              gap: $gap-5;
+            }
+          }
+          @include mediaQuery($largeScreen_min_width) {
+            & {
               gap: $gap-3;
             }
           }
@@ -427,10 +446,16 @@ $width: 85%;
       }
       .match-cards {
         max-height: calc((100% - $gap-2) * 0.2);
-        gap: $gap-3;
+        gap: $gap-4;
         @include mediaQuery($medScreen_min_width) {
           & {
             max-height: calc((100% - $gap-1) * 0.2);
+            gap: $gap-5;
+          }
+        }
+        @include mediaQuery($largeScreen_min_width) {
+          & {
+            gap: $gap-3;
           }
         }
         .match-card-wrapper {
@@ -689,7 +714,15 @@ $width: 85%;
     transform: translateZ(-1px) scaleX(1);
   }
 }
+@keyframes hideGame {
+  0% {
+    transform: scale(1);
+  }
 
+  100% {
+    transform: scale(0);
+  }
+}
 @keyframes scaleDown {
   0% {
     top: 50%;
